@@ -50,8 +50,8 @@ te.Embarked=te.Embarked.fillna(method='bfill',inplace=True)
 # 1.3 - Prepare the data for models
 
 #drop the columns that whil not be used
-tr.drop(['PassengerId','Name','SibSp','Parch','Ticket','Cabin'],axis=1,inplace=True)
-te.drop(['PassengerId','Name','SibSp','Parch','Ticket','Cabin'],axis=1,inplace=True)
+tr.drop(['PassengerId','Name','Ticket','SibSp','Parch','Ticket','Cabin'],axis=1,inplace=True)
+te.drop(['PassengerId','Name','Ticket','SibSp','Parch','Ticket','Cabin'],axis=1,inplace=True)
 
 data=pd.concat([tr, te], sort=False)
 
@@ -86,7 +86,7 @@ np.mean(scores_rf)
 
 svc=make_pipeline(StandardScaler(),SVC(random_state=1))
 r=[0.0001,0.001,0.1,1,10,50,100]
-PSVM=[{'svc__C':r, 'svc__kernel':['linear']},
+PSVM=[{'svc__C':r, 'svc__kernel':['rbf']},
       {'svc__C':r, 'svc__gamma':r, 'svc__kernel':['rbf']}]
 GSSVM=GridSearchCV(estimator=svc, param_grid=PSVM, scoring='accuracy', cv=cv_score)
 scores_svm=cross_val_score(GSSVM, xtr.astype(float), ytr,scoring='accuracy', cv=cv_score)
